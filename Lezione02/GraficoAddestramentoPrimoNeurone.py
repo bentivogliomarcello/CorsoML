@@ -1,5 +1,6 @@
 import math # Serve per le funzioni matematiche
 import random # Serve per generare numeri casuali
+import matplotlib.pyplot as plt # Serve per realizzare il grafico dell'addestramento
 
 
 Dataset = [[4,20,0],[5,24,0],[18,70,1],[20,80,1]] # Questo è il Dataset che è rappresentato come una lista di liste
@@ -48,35 +49,25 @@ def BackPropagation (Peso,Altezza, ValoreAtteso): # Addestrare il neurone passan
     bias = bias - dBias * lr
     return Errore
     
-
+ElencoErrori =[]
 #Addestriamo la nostra rete
-for epoca in range (5000):  #Scorro il range (un insieme di valori da 0 a 4999) e li assegno alla variabile epoca
+for epoca in range (10000):  #Scorro il range (un insieme di valori da 0 a 4999) e li assegno alla variabile epoca
     ErroreEpoca = 0 # Azzero per l'epoca in corso la somma dell'errore quatratico
     for elemento in Dataset: 
-        peso = elemento[0] / massimoPeso # Normalizziamo rispetto al peso
-        altezza = elemento[1] /massimaAltezza # Normalizziamo rispetto all'altezza
+        peso = elemento[0] / massimoPeso
+        altezza = elemento[1] /massimaAltezza
         vatteso = elemento[2]
         ErroreEpoca = ErroreEpoca + BackPropagation(peso,altezza,vatteso)
     ErroreEpoca = math.sqrt(ErroreEpoca/len (Dataset)) # Calcolo l'errore medio divendo la somma precedente per il numero di valori e applicando la radice quadrata.
     print (epoca, ErroreEpoca) # Per ogni epoca stampo l'errore
+    ElencoErrori.append(ErroreEpoca)
+    
+    
+plt.figure()
+plt.plot (range (len(ElencoErrori)),ElencoErrori)
+plt.show()
+    
 
-    
-    
-
-    
-while True: # Creiamo un ciclo infinito: ANCHE SE NON SI FA MAI!
-    peso = float (input ("Dammi il peso dell'animale: ")) / massimoPeso
-    altezza = float (input ("Dammi l'altezza dell'animale: ")) / massimaAltezza
-    risultato = Output (peso,altezza)
-    if risultato < thr: # Se è sotto thr allora diciamo che è un gatto
-        print (f"E' un gatto ({risultato})!!!")
-    elif risultato > 1-thr:  # Se è sopra 1- thr è un cane
-        print (f"E' un cane {risultato}!!!")
-    else: # Altrimenti non sappiamo di che animale si tratta
-        print (f"Purtroppo non so di che animale si tratta! {risultato}")
-    
-    
-    
     
 
 

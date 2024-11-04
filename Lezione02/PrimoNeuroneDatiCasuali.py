@@ -1,5 +1,7 @@
 import math # Serve per le funzioni matematiche
 import random # Serve per generare numeri casuali
+from matplotlib import pyplot as plt
+import numpy as np
 
 
 Dataset = [[4,20,0],[5,24,0],[18,70,1],[20,80,1]] # Questo è il Dataset che è rappresentato come una lista di liste
@@ -10,7 +12,7 @@ Dataset = [[4,20,0],[5,24,0],[18,70,1],[20,80,1]] # Questo è il Dataset che è 
 massimoPeso = 20    # Massimo valore della prima caratteristica (Peso in Kg)
 massimaAltezza = 80 # Massimo valore della seconda caratteristica  (Altezza in cm)
 
-thr = 0.05 # Imposto la Threshold
+thr = 0.1 # Imposto la Threshold
 
 random.shuffle(Dataset) # Questa funzione consente di mescolare i dati del Dataset
 
@@ -50,7 +52,7 @@ def BackPropagation (Peso,Altezza, ValoreAtteso): # Addestrare il neurone passan
     
 
 #Addestriamo la nostra rete
-for epoca in range (5000):  #Scorro il range (un insieme di valori da 0 a 4999) e li assegno alla variabile epoca
+for epoca in range (1500):  #Scorro il range (un insieme di valori da 0 a 4999) e li assegno alla variabile epoca
     ErroreEpoca = 0 # Azzero per l'epoca in corso la somma dell'errore quatratico
     for elemento in Dataset: 
         peso = elemento[0] / massimoPeso # Normalizziamo rispetto al peso
@@ -62,19 +64,38 @@ for epoca in range (5000):  #Scorro il range (un insieme di valori da 0 a 4999) 
 
     
     
+cani = []
+gatti =[]
+noanimals = []
 
-    
-while True: # Creiamo un ciclo infinito: ANCHE SE NON SI FA MAI!
-    peso = float (input ("Dammi il peso dell'animale: ")) / massimoPeso
-    altezza = float (input ("Dammi l'altezza dell'animale: ")) / massimaAltezza
+while len (cani) <100 and len (gatti) <100:
+    peso = random.random()
+    altezza = random.random()
+    #print (f"L'animale di peso {peso*massimoPeso} e altezza {altezza*massimaAltezza} ", end="")
     risultato = Output (peso,altezza)
     if risultato < thr: # Se è sotto thr allora diciamo che è un gatto
-        print (f"E' un gatto ({risultato})!!!")
+        #print (f"E' un gatto ({risultato})!!!")
+        gatti.append([peso,altezza])
     elif risultato > 1-thr:  # Se è sopra 1- thr è un cane
-        print (f"E' un cane {risultato}!!!")
+        #print (f"E' un cane {risultato}!!!")
+        cani.append([peso,altezza])
     else: # Altrimenti non sappiamo di che animale si tratta
-        print (f"Purtroppo non so di che animale si tratta! {risultato}")
+        #print (f"Purtroppo non so di che animale si tratta! {risultato}")
+        noanimals.append([peso,altezza])
     
+    
+
+cani = np.array(cani)
+gatti = np.array (gatti)
+noanimals = np.array (noanimals)
+
+print (cani, gatti)
+
+plt.figure()
+plt.scatter(cani[:,0], cani[:,1])
+plt.scatter(gatti[:,0], gatti[:,1])
+plt.scatter(noanimals[:,0], noanimals[:,1])
+plt.show()
     
     
     
